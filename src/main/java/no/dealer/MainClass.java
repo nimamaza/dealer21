@@ -40,25 +40,25 @@ public class MainClass {
 
         Optional<Player> winnerPlayer = checkForWinner(playerList);
         if(winnerPlayer.isPresent()){
-            System.out.println("Winner is " + winnerPlayer.get().getPlayerName() +  " with score of " + winnerPlayer.get().getScore());
+            printInfo(winnerPlayer, playerList);
             return;
         }
 
         if ("lost".equalsIgnoreCase(pickUntil(deck,sam, 17))){
-            printInfo(dealer, sam);
+            printInfo(Optional.of(dealer), playerList);
             return;
         }
 
         if("lost".equalsIgnoreCase(pickUntil(deck,dealer, sam.getScore() + 1 ))){
-            printInfo(sam , dealer);
+            printInfo(Optional.of(sam) , playerList);
             return;
         }
 
 
         if (sam.getScore() > dealer.getScore()){
-            printInfo(sam, dealer);
+            printInfo(Optional.of(sam), playerList);
         }else if(sam.getScore() < dealer.getScore()){
-            printInfo(dealer, sam);
+            printInfo(Optional.of(dealer), playerList);
         }else{
             System.out.println("Both equal!");
         }
@@ -66,12 +66,12 @@ public class MainClass {
 
     }
 
-    public static void printInfo(Player winner, Player looser){
-        System.out.println( winner.getPlayerName() + " has won the game!");
-
-        printPlayerCards(winner);
-        System.out.println();
-        printPlayerCards(looser);
+    private static void printInfo(Optional<Player> winnerPlayer, List<Player> playerList) {
+        System.out.println("Winner is " + winnerPlayer.get().getPlayerName() +  " with score of " + winnerPlayer.get().getScore());
+        for (Player player: playerList) {
+            printPlayerCards(player);
+            System.out.println();
+        }
     }
 
     public static void printPlayerCards(Player player){
